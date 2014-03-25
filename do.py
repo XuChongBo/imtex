@@ -6,9 +6,10 @@ from pylab import jet
 from skimage import filter
 from scipy.ndimage import filters,measurements
 from scipy import stats
+from knn_search import knn_search
 
-#showFigure=True
-showFigure=False
+showFigure=True
+#showFigure=False
 
 def get_word_centroid_points(img):
     """
@@ -120,3 +121,23 @@ if __name__=="__main__":
     imshow(img)
     plot(x_list,y_list,'r*')
     show()
+
+
+    p_2d_array=np.array(zip(y_list,x_list))
+
+    p_idx =  8
+    p=p_2d_array[p_idx]
+
+    # performing the search
+    neig_idx = knn_search(p_idx,p_2d_array,5)
+
+    if showFigure:
+        figure()
+        imshow(img)
+
+        # plotting the pointlist and the query point
+        plot(p_2d_array[:,1],p_2d_array[:,0],'ob',p[1],p[0],'or')
+
+        # highlighting the neighbours
+        plot(p_2d_array[neig_idx,1],p_2d_array[neig_idx,0],'o', markerfacecolor='None',markersize=15,markeredgewidth=1)
+        show()
