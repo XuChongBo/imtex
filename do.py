@@ -7,6 +7,7 @@ from skimage import filter
 from scipy.ndimage import filters,measurements
 from scipy import stats
 from knn_search import knn_search
+from featrue_extract import sort_by_atan2
 
 showFigure=True
 #showFigure=False
@@ -115,13 +116,12 @@ if __name__=="__main__":
     show()
 
     #====== extract word regions and their centroids=====  
-    y_list, x_list= get_word_centroid_points(img)
+    y_list, x_list = get_word_centroid_points(img)
 
     figure(); 
     imshow(img)
     plot(x_list,y_list,'r*')
     show()
-
 
     p_2d_array=np.array(zip(y_list,x_list))
 
@@ -141,3 +141,6 @@ if __name__=="__main__":
         # highlighting the neighbours
         plot(p_2d_array[neig_idx,1],p_2d_array[neig_idx,0],'o', markerfacecolor='None',markersize=15,markeredgewidth=1)
         show()
+    
+    #=== clock wise order
+    p_2d_array = sort_by_atan2(p_2d_array)
