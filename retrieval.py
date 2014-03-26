@@ -12,11 +12,8 @@ from knn_search import knn_search
 from feature_extract import sort_by_atan2
 from feature_extract import five_points_cross_ratio
 from db import register_to_hashtable
-from word_region_identify import get_word_centroid_points,find_nearest_points
 #showFigure=True
 showFigure=False
-
-
 
 if __name__=="__main__":
     #file_name='./data/das-0.jpg'
@@ -46,7 +43,7 @@ if __name__=="__main__":
 
     for p_idx in range(word_point_num):
         Point_ID = p_idx
-        nearest_points = find_nearest_points(p_2d_array,p_idx, N=8)
+        nearest_points = find_nearest_points(p_idx, N=8)
         #print nearest_points
         if showFigure:
             figure()

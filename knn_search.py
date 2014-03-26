@@ -21,7 +21,7 @@ def knn_search(p_idx, point_2d_array, K):
         return the neighgbours' index list
     """
     global dist_matrix
-    if not dist_matrix:
+    if dist_matrix is None:
         dist_matrix = caculate_dist_matrix(point_2d_array)
     l = len(point_2d_array)
     K = K if K < l else l
@@ -33,9 +33,9 @@ def knn_search(p_idx, point_2d_array, K):
     sorted_idx = np.argsort(dist_list) 
 
     # return the indexes of K nearest neighbours
-    return sorted_idx[:K]
+    return sorted_idx[1:K+1]
 
-if __name__=='__main___':
+if __name__=='__main__':
     p_2d_array=np.array([(4,6),(2,3),(10,4),(8,3),(11,3),(7,4)])
     m = caculate_dist_matrix(p_2d_array)
     print p_2d_array
