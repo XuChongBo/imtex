@@ -6,3 +6,10 @@
 *.png
 
 *.pyc
+
+*.log
+
+sessions/
+databases/
+cron/
+uploads/
