@@ -25,6 +25,8 @@ else:
 ## by default give a view/generic.extension to all actions from localhost
 ## none otherwise. a pattern can be 'controller/function.extension'
 response.generic_patterns = ['*'] if request.is_local else []
+from gluon.custom_import import track_changes
+track_changes(True)
 ## (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
 # response.optimize_js = 'concat,minify,inline'
@@ -89,7 +91,7 @@ db.define_table('t_doc_image',
         format = '%(title)s')
 
 db.define_table('t_point_pattern',
-        Field('hash_index', 'double'),
+        Field('hash_index', 'integer'),
         Field('doc_id', 'reference t_doc_image'),
         Field('point_id', 'integer'),
         Field('pattern_id', 'integer'),

@@ -1,16 +1,5 @@
-<h1> hello </h1>
+{{extend 'layout.html'}}
 
-<a href='ab'> just test link</a>
-
-
-{{def itemlink(name,url):}}
-    <li><a  href="{{=url}}">{{=name}}</a></li>
-{{return}}
-
-<ul>
-{{for name, url in link_list:}}
-    {{itemlink(name, url)}}
-{{pass}}
-</ul>
+<a  href="{{=url_show_all_images}}">查看图库</a>
 
 <img src="{{=URL('download',args='xx')}}" /> 

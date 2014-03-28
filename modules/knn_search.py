@@ -14,15 +14,15 @@ def caculate_dist_matrix(point_2d_array):
             m[j,i]=d
     return m
 
-dist_matrix = None
+#dist_matrix = None
 def knn_search(p_idx, point_2d_array, K):
     """ 
         find K nearest neighbours of the point with index p_idx  in point list
         return the neighgbours' index list
     """
-    global dist_matrix
-    if dist_matrix is None:
-        dist_matrix = caculate_dist_matrix(point_2d_array)
+    #global dist_matrix
+    #if dist_matrix is None:
+    dist_matrix = caculate_dist_matrix(point_2d_array)
     l = len(point_2d_array)
     K = K if K < l else l
 
@@ -31,7 +31,6 @@ def knn_search(p_idx, point_2d_array, K):
 
     # sorting
     sorted_idx = np.argsort(dist_list) 
-
     # return the indexes of K nearest neighbours
     return sorted_idx[1:K+1]
 

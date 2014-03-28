@@ -1,22 +1,34 @@
+from PIL import Image
+import os
 
 def index():
-    return HTML(BODY(H2("abc"), 
-                    H2(A('入库',_href=URL('upload'))),
-                    H2(A('检索',_href=URL('retrieval')))
-                    ))
-def upload():
+    return dict(url_show_all_images=URL('show_all_images'))
+
+    #URL('retrieval')
+
+def show_all_images():
     form = SQLFORM(db.t_doc_image)
-    uploaded_image_record=[]
     if form.accepts(request,session):
         response.flash = 'Thanks! The form has been submitted.'
         #accepted values
-        uploaded_image_record = db(db.t_doc_image.id==form.vars.id).select()
-        print uploaded_image_record
+        #uploaded_image_record = db(db.t_doc_image.id==form.vars.id).select()
+        #print uploaded_image_record
     elif form.errors:
         response.flash = 'Please correct the error(s).'
-        #records = db().select(db.image.ALL)
-    return dict(form=form, records=uploaded_image_record)
+    image_records = db().select(db.t_doc_image.ALL)
+    return dict(form=form, records=image_records)
 
+def image_register():
+
+    import image_register as img_register
+    img_register.hash_table =MyHashTable(db) 
+    img_id = request.args[0]
+    rows = db(db.t_doc_image.id==img_id).select()
+    f = rows.first().internal_filename
+    f = os.path.join(request.folder,'uploads',f)
+    img = Image.open(f)
+    img_register.image_register(img,img_id)
+    return DIV("%s" % str(img) + request.args[0])
 
 def ndex():
     link_list=[]

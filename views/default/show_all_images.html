@@ -1,0 +1,34 @@
+{{extend 'layout.html'}}
+<br /><br /><br />
+<h1>Web Form</h1>
+{{=form}}
+{{=BEAUTIFY(form.errors)}}
+<h2>All Images:</h2>
+<table> 
+    <tr> <th>ID</th> <th>name</th> <th>image</th> </tr> 
+    {{for record in records:}} 
+    {{filename, file = db.t_doc_image.internal_filename.retrieve(record.internal_filename)}} 
+        <tr> 
+            <td> 
+                {{=record.id}} 
+            </td> 
+            <td> 
+                {{=filename}} 
+            </td> 
+            <td> 
+            {{=IMG(_src=URL(r=request, c='default', f='download', args=[record.internal_filename]))}}
+            </td> 
+            </tr>
+            <tr>
+            <td>
+               <div id="features_{{=record.id}}">
+               feature points:123
+               </div>
+           </td>
+           <td>
+            {{=DIV(A("计算特征",callback=URL('image_register',args=[record.id]),target="features_%s" % record.id),_id="me")}}
+            </td>
+
+        </tr> 
+    {{pass}} 
+</table>

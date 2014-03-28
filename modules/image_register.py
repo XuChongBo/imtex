@@ -17,10 +17,9 @@ from word_region_identify import get_word_centroid_points,find_nearest_points
 #showFigure=True
 showFigure=False
 
-from testHashTable import TestTable
-hash_table = TestTable()
+hash_table = None
 
-def image_register(img):
+def image_register(img,Document_ID):
     """
         1.find word point in img 
         2.caculate the point features
@@ -43,6 +42,7 @@ def image_register(img):
 
     for p_idx in range(word_point_num):
         Point_ID = p_idx
+        print "to call find nearest points"
         nearest_points = find_nearest_points(p_2d_array,p_idx, N=8)
         #print nearest_points
         if showFigure:
@@ -97,11 +97,14 @@ if __name__=="__main__":
     Document_ID = 1
     # load the image file
     img = Image.open(file_name)
-
+    print img
+    exit(0)
     if showFigure:
         figure(); 
         imshow(img)
         show()
 
-    image_register(img)
+    from testHashTable import TestTable
+    hash_table = TestTable()
+    image_register(img,Document_ID)
 

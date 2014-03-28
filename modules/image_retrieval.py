@@ -16,8 +16,8 @@ from word_region_identify import get_word_centroid_points,find_nearest_points
 
 #showFigure=True
 showFigure=False
-from testHashTable import TestTable
-hash_table = TestTable()
+
+hash_table = None
 
 def image_retrieval(img):
     """
@@ -118,4 +118,7 @@ if __name__=="__main__":
         figure(); 
         imshow(img)
         show()
+
+    from testHashTable import TestTable
+    hash_table = TestTable()
     image_retrieval(img)

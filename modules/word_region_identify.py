@@ -18,6 +18,7 @@ def find_nearest_points(p_2d_array,p_idx, N=8):
     p=p_2d_array[p_idx]
     # performing the search
     neighbours_idx = knn_search(p_idx,p_2d_array,N)
+    print 'afterknn:',neighbours_idx 
     if showFigure:
         figure()
         imshow(img)
@@ -27,7 +28,7 @@ def find_nearest_points(p_2d_array,p_idx, N=8):
         # highlighting the neighbours
         plot(p_2d_array[neighbours_idx,1],p_2d_array[neighbours_idx,0],'o', markerfacecolor='None',markersize=15,markeredgewidth=1)
         show()
-    
+    print "ok??" 
     nearest_n_points = p_2d_array[neighbours_idx]
     
     print 'center point:', p
@@ -137,7 +138,6 @@ if __name__=="__main__":
     Document_ID = file_name
     # load the image file
     img = Image.open(file_name)
-
     if showFigure:
         figure(); 
         imshow(img)
