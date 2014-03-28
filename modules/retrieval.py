@@ -12,25 +12,21 @@ from scipy import stats
 from knn_search import knn_search
 from feature_extract import sort_by_atan2
 from feature_extract import five_points_cross_ratio
-from db import register_to_hashtable,lookup_hashtable,first_vote_by_hashtable,get_topk_in_second_vote_table,summary_first_vote
+from hash_table import register_to_hashtable,lookup_hashtable,first_vote_by_hashtable,get_topk_in_second_vote_table,summary_first_vote
 from word_region_identify import get_word_centroid_points,find_nearest_points
 
 #showFigure=True
 showFigure=False
 
-if __name__=="__main__":
-    #file_name='./data/das-0.jpg'
-    #file_name='./data/EngBill21.jpg'
-    #file_name='./data/sample1.jpg'
-    file_name='/Users/xcbfreedom/projects/data/formula_images/user_images/531283fa24f0b8afb.png'
-    Document_ID = file_name
-    # load the image file
-    img = Image.open(file_name)
+def image_retrieval(img):
+    """
+        1.find word point in img 
+        2.caculate the point features
+        3.use the point features to retrieval the similar images
 
-    if showFigure:
-        figure(); 
-        imshow(img)
-        show()
+        input: PIL img
+        output: image_id_list
+    """
 
     #====== extract word regions and their centroids=====  
     y_list, x_list = get_word_centroid_points(img)
@@ -107,3 +103,19 @@ if __name__=="__main__":
 
     end_time = time.time()
     print " cost:%s s" % int(end_time-start_time)
+
+if __name__=="__main__":
+    #file_name='./data/das-0.jpg'
+    #file_name='./data/EngBill21.jpg'
+    #file_name='./data/sample1.jpg'
+    file_name='/Users/xcbfreedom/projects/data/formula_images/user_images/531283fa24f0b8afb.png'
+    Document_ID = file_name
+    # load the image file
+    img = Image.open(file_name)
+
+    if showFigure:
+        figure(); 
+        imshow(img)
+        show()
+
+    image_retrieval(img)

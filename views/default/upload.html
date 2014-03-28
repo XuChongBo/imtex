@@ -1,0 +1,20 @@
+{{extend 'layout.html'}}
+<br /><br /><br />
+<h1>Web Form</h1>
+{{=form}}
+<h2>form.errors:</h2>
+{{=BEAUTIFY(form.errors)}}
+<table> 
+    <tr> <th>name</th> <th>image</th> </tr> 
+    {{for record in records:}} 
+    {{filename, file = db.t_doc_image.internal_filename.retrieve(record.internal_filename)}} 
+        <tr> 
+            <td> 
+                {{=filename}} 
+            </td> 
+            <td> 
+            {{=IMG(_src=URL(r=request, c='default', f='download', args=[record.internal_filename]))}}
+            </td> 
+        </tr> 
+    {{pass}} 
+</table>

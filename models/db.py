@@ -82,3 +82,18 @@ use_janrain(auth, filename='private/janrain.key')
 
 ## after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
+
+db.define_table('t_doc_image',
+        Field('title', 'string',unique=True),
+        Field('internal_filename', 'upload'),
+        format = '%(title)s')
+
+db.define_table('t_point_pattern',
+        Field('hash_index', 'double'),
+        Field('doc_id', 'reference t_doc_image'),
+        Field('point_id', 'integer'),
+        Field('pattern_id', 'integer'),
+        format = '%(hash_index)s-%(doc_id)s-%(point_id)s-%(pattern_id)s')
+
+db.t_point_pattern.doc_id.requires = IS_IN_DB(db, db.t_doc_image.id, '%(title)s')
+db.t_point_pattern.doc_id.writable = db.t_point_pattern.doc_id.readable = False

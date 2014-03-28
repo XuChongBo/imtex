@@ -13,3 +13,5 @@ sessions/
 databases/
 cron/
 uploads/
+errors/
+*.table

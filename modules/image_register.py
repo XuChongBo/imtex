@@ -11,34 +11,27 @@ from scipy import stats
 from knn_search import knn_search
 from feature_extract import sort_by_atan2
 from feature_extract import five_points_cross_ratio
-from db import register_to_hashtable
+from hash_table import register_to_hashtable
 from word_region_identify import get_word_centroid_points,find_nearest_points
 #showFigure=True
 showFigure=False
 
+def image_register(img):
+    """
+        1.find word point in img 
+        2.caculate the point features
+        3.store the point features by the hash value.
 
-
-if __name__=="__main__":
-    #file_name='./data/das-0.jpg'
-    #file_name='./data/EngBill21.jpg'
-    #file_name='./data/sample1.jpg'
-    file_name='/Users/xcbfreedom/projects/data/formula_images/user_images/531283fa24f0b8afb.png'
-    Document_ID = file_name
-    # load the image file
-    img = Image.open(file_name)
-
+        input: PIL img
+        output: None
+    """
+    #====== extract word regions and their centroids=====  
+    y_list, x_list = get_word_centroid_points(img)
     if showFigure:
         figure(); 
         imshow(img)
+        plot(x_list,y_list,'r*')
         show()
-
-    #====== extract word regions and their centroids=====  
-    y_list, x_list = get_word_centroid_points(img)
-
-    figure(); 
-    imshow(img)
-    plot(x_list,y_list,'r*')
-    show()
 
     p_2d_array=np.array(zip(y_list,x_list))
     word_point_num = len(p_2d_array)
@@ -90,3 +83,20 @@ if __name__=="__main__":
             #break
             nCm_Pattern_ID += 1
         #break
+
+
+if __name__=="__main__":
+    #file_name='./data/das-0.jpg'
+    #file_name='./data/EngBill21.jpg'
+    #file_name='./data/sample1.jpg'
+    file_name='/Users/xcbfreedom/projects/data/formula_images/user_images/531283fa24f0b8afb.png'
+    Document_ID = file_name
+    # load the image file
+    img = Image.open(file_name)
+
+    if showFigure:
+        figure(); 
+        imshow(img)
+        show()
+
+    image_register(img)

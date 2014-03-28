@@ -1,76 +1,43 @@
-# -*- coding: utf-8 -*-
-# this file is released under public domain and you can use without limitations
-
-#########################################################################
-## This is a sample controller
-## - index is the default action of any application
-## - user is required for authentication and authorization
-## - download is for downloading files uploaded in the db (does streaming)
-## - call exposes all registered services (none by default)
-#########################################################################
-
 
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
-    response.flash = T("Welcome to web2py!")
-    return dict(message=T('Hello World'))
-
-
-def user():
-    """
-    exposes:
-    http://..../[app]/default/user/login
-    http://..../[app]/default/user/logout
-    http://..../[app]/default/user/register
-    http://..../[app]/default/user/profile
-    http://..../[app]/default/user/retrieve_password
-    http://..../[app]/default/user/change_password
-    http://..../[app]/default/user/manage_users (requires membership in
-    use @auth.requires_login()
-        @auth.requires_membership('group name')
-        @auth.requires_permission('read','table name',record_id)
-    to decorate functions that need access control
-    """
-    return dict(form=auth())
-
-@cache.action()
-def download():
-    """
-    allows downloading of uploaded files
-    http://..../[app]/default/download/[filename]
-    """
-    return response.download(request, db)
+    return HTML(BODY(H2("abc"), 
+                    H2(A('入库',_href=URL('upload'))),
+                    H2(A('检索',_href=URL('retrieval')))
+                    ))
+def upload():
+    form = SQLFORM(db.t_doc_image)
+    uploaded_image_record=[]
+    if form.accepts(request,session):
+        response.flash = 'Thanks! The form has been submitted.'
+        #accepted values
+        uploaded_image_record = db(db.t_doc_image.id==form.vars.id).select()
+        print uploaded_image_record
+    elif form.errors:
+        response.flash = 'Please correct the error(s).'
+        #records = db().select(db.image.ALL)
+    return dict(form=form, records=uploaded_image_record)
 
 
-def call():
-    """
-    exposes services. for example:
-    http://..../[app]/default/call/jsonrpc
-    decorate with @services.jsonrpc the functions to expose
-    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
-    """
-    return service()
+def ndex():
+    link_list=[]
+    base_url='http://'+request.env.http_host+'/'+request.application+'/'
+    links = ["hello/action2","hello/action1"]
+    links += ["form2/display_your_form"]
+    links += ["form1/first","form1/second"]
+    links += ["show_env/request","show_env/all"]
+    links += ["form_crud/all_records","form_crud/update_your_form"]
+    links += ["form_validation/display_your_form"]
+    links += ["show_file/show_txt_file/test.txt"]
+    links += ["show_file/show_image_file/test.png"]
+    links += ["image_blog/index"]
+    links += ["image_blog/upload_and_show_all"]
+    links += ["upload_resize_image/upload_show"]
+    links += ["upload_resize_image/upload_resize"]
+    links += ["do_matplot"]
+    for i in links:
+        link_list.append((i, base_url+i))
+    return dict(link_list=link_list)
 
 
-@auth.requires_signature()
-def data():
-    """
-    http://..../[app]/default/data/tables
-    http://..../[app]/default/data/create/[table]
-    http://..../[app]/default/data/read/[table]/[id]
-    http://..../[app]/default/data/update/[table]/[id]
-    http://..../[app]/default/data/delete/[table]/[id]
-    http://..../[app]/default/data/select/[table]
-    http://..../[app]/default/data/search/[table]
-    but URLs must be signed, i.e. linked with
-      A('table',_href=URL('data/tables',user_signature=True))
-    or with the signed load operator
-      LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
-    """
-    return dict(form=crud())
+def download():  
+    return response.download(request, db) 
