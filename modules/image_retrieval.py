@@ -12,11 +12,12 @@ from scipy import stats
 from knn_search import knn_search
 from feature_extract import sort_by_atan2
 from feature_extract import five_points_cross_ratio
-from hash_table import register_to_hashtable,lookup_hashtable,first_vote_by_hashtable,get_topk_in_second_vote_table,summary_first_vote
 from word_region_identify import get_word_centroid_points,find_nearest_points
 
 #showFigure=True
 showFigure=False
+from testHashTable import TestTable
+hash_table = TestTable()
 
 def image_retrieval(img):
     """
@@ -89,17 +90,17 @@ def image_retrieval(img):
                     H_index += pat* ((Vmax+1)**5)
 
                     #Look up the hash table using H_index and increment the corresponding cell of the first voting table.
-                    first_vote_by_hashtable(Document_ID, Point_ID, nCm_Pattern_ID, H_index)
+                    hash_table.first_vote_by_hashtable(H_index)
                     mC5_Pattern_ID += 1 
                     
                 #Increment the cell of the second voting table if the document ID in the first voting table has votes larger than the threshold l.
                 #clear the first voting table.
-                summary_first_vote()
+                hash_table.summary_first_vote()
             #break #nCm_pattern
             nCm_Pattern_ID += 1
         #break #all point
     #Return document id which has the largest votes in the second voting table
-    print 'the result doc_id:', get_topk_in_second_vote_table()
+    print 'the result doc_id:', hash_table.get_topk_in_second_vote_table()
 
     end_time = time.time()
     print " cost:%s s" % int(end_time-start_time)
@@ -117,5 +118,4 @@ if __name__=="__main__":
         figure(); 
         imshow(img)
         show()
-
     image_retrieval(img)

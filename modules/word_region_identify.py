@@ -11,7 +11,6 @@ from scipy import stats
 from knn_search import knn_search
 from feature_extract import sort_by_atan2
 from feature_extract import five_points_cross_ratio
-from db import register_to_hashtable
 #showFigure=True
 showFigure=False
 

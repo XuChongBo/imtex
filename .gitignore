@@ -15,3 +15,5 @@ cron/
 uploads/
 errors/
 *.table
+
+*.sqlite

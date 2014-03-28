@@ -11,10 +11,14 @@ from scipy import stats
 from knn_search import knn_search
 from feature_extract import sort_by_atan2
 from feature_extract import five_points_cross_ratio
-from hash_table import register_to_hashtable
+
+
 from word_region_identify import get_word_centroid_points,find_nearest_points
 #showFigure=True
 showFigure=False
+
+from testHashTable import TestTable
+hash_table = TestTable()
 
 def image_register(img):
     """
@@ -78,7 +82,7 @@ def image_register(img):
                     H_index= cr * ( (Vmax+1)**cr_i )
                     cr_i +=1
                 H_index += pat* ((Vmax+1)**5)
-                register_to_hashtable(Document_ID, Point_ID, nCm_Pattern_ID, H_index)
+                hash_table.register_to_hashtable(Document_ID, Point_ID, nCm_Pattern_ID, H_index)
                 mC5_Pattern_ID += 1 
             #break
             nCm_Pattern_ID += 1
@@ -90,7 +94,7 @@ if __name__=="__main__":
     #file_name='./data/EngBill21.jpg'
     #file_name='./data/sample1.jpg'
     file_name='/Users/xcbfreedom/projects/data/formula_images/user_images/531283fa24f0b8afb.png'
-    Document_ID = file_name
+    Document_ID = 1
     # load the image file
     img = Image.open(file_name)
 
@@ -100,3 +104,4 @@ if __name__=="__main__":
         show()
 
     image_register(img)
+
