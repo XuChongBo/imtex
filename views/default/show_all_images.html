@@ -1,12 +1,11 @@
 {{extend 'layout.html'}}
-<br /><br /><br />
-<h1>Web Form</h1>
-{{=form}}
-{{=BEAUTIFY(form.errors)}}
-<h2>All Images:</h2>
-<table> 
+<h2>已有图片:</h2>
+<h3>t_doc_image表的总记录数: {{=len(image_records)}}</h3>
+<h3>t_point_pattern表的总记录数: {{=total_count}}</h3>
+<h3>hash值的总个数: {{=hash_index_count}}  重用率：{{="%.2f" % (total_count*1.0/hash_index_count) if hash_index_count>0 else 0 }}</h3>
+<table border="3"> 
     <tr> <th>ID</th> <th>name</th> <th>image</th> </tr> 
-    {{for record in records:}} 
+    {{for record in image_records:}} 
     {{filename, file = db.t_doc_image.internal_filename.retrieve(record.internal_filename)}} 
         <tr> 
             <td> 
@@ -20,15 +19,19 @@
             </td> 
             </tr>
             <tr>
-            <td>
-               <div id="features_{{=record.id}}">
-               feature points:123
-               </div>
+            <td></td>
+            <td >
+               {{=LOAD('default','feature_caculate_div.load',args=[record.id],ajax=True)}}
            </td>
-           <td>
-            {{=DIV(A("计算特征",callback=URL('image_register',args=[record.id]),target="features_%s" % record.id),_id="me")}}
-            </td>
+            <td id="featrue_view_div_{{=record.id}}">
+               {{=LOAD('default','feature_view_div.load',args=[record.id],ajax=True)}}
+           </td>
+
 
         </tr> 
     {{pass}} 
 </table>
+
+<h1>上传新图片</h1>
+{{=form}}
+{{=BEAUTIFY(form.errors)}}

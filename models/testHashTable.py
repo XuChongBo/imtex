@@ -19,7 +19,6 @@ class MyHashTable(HashTable):
         """
         Document_ID, Point_ID, nCm_Pattern_ID, H_index=nCm_pattern
         self.db.t_point_pattern.insert(hash_index=H_index,doc_id=Document_ID,point_id=Point_ID, pattern_id=nCm_Pattern_ID)
-        self.db.commit()
 
     def select(self, H_index):
         """
@@ -33,3 +32,5 @@ class MyHashTable(HashTable):
             res.append({'doc_id':r.doc_id,'point_id':r.point_id})  
         return res
 
+    def commit():
+        self.db.commit()

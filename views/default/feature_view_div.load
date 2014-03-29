@@ -1,0 +1,8 @@
+<div>
+{{h_count = db(db.t_point_pattern.doc_id==img_id).count(distinct=db.t_point_pattern.hash_index)}}
+               hash值个数:{{=h_count}}
+    {{point_count = db(db.t_point_pattern.doc_id==img_id).count(distinct=db.t_point_pattern.point_id)}}
+               point个数:{{=point_count}}
+    {{pattern_count = db(db.t_point_pattern.doc_id==img_id).count()}}
+               pattern个数:{{=pattern_count}}
+</div>

@@ -1,0 +1,9 @@
+<div id ="caculate_div_{{=img_id}}">
+    {{row = db.t_point_pattern(doc_id=img_id)}}
+           {{if row:}}
+               已计算特征.
+                {{=FORM(INPUT(_type='button',_value='删除该图片特征记录', _onclick="ajax('remove_the_register/%s',[],':eval')" % img_id))}}           
+                {{else:}}
+                {{=FORM(INPUT(_type='button',_value='计算特征', _onclick="ajax('image_register/%s',[],':eval')" % img_id))}}           
+           {{pass}}
+</div>
