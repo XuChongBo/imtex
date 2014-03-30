@@ -1,7 +1,10 @@
 from PIL import Image
+import matplotlib
+matplotlib.use('Agg')
 from pylab import imshow,show,subplot,array,figure,gray,uint8,hist,plot
 import numpy as np
 from pylab import jet,annotate
+import output_the_plot
 
 import itertools
 
@@ -14,8 +17,8 @@ from feature_extract import five_points_cross_ratio
 
 
 from word_region_identify import get_word_centroid_points,find_nearest_points
-#showFigure=True
-showFigure=False
+toPlot=True
+#toPlot=False
 
 hash_table = None
 
@@ -28,13 +31,17 @@ def image_register(img,Document_ID):
         input: PIL img
         output: None
     """
+    if toPlot:
+        figure(); 
+        imshow(img)
+        output_the_plot.output('original_%s.png' % Document_ID)
     #====== extract word regions and their centroids=====  
-    y_list, x_list = get_word_centroid_points(img)
-    if showFigure:
+    y_list, x_list = get_word_centroid_points(img,Document_ID)
+    if toPlot:
         figure(); 
         imshow(img)
         plot(x_list,y_list,'r*')
-        show()
+        output_the_plot.output('word_points_%s.png' % Document_ID)
 
     p_2d_array=np.array(zip(y_list,x_list))
     word_point_num = len(p_2d_array)
@@ -45,7 +52,7 @@ def image_register(img,Document_ID):
         print "to call find nearest points"
         nearest_points = find_nearest_points(p_2d_array,p_idx, N=8)
         #print nearest_points
-        if showFigure:
+        if toPlot:
             figure()
             imshow(img)
             center_point = p_2d_array[p_idx]
@@ -60,7 +67,7 @@ def image_register(img,Document_ID):
             # highlighting the neighbours
             plot(nearest_points[:,1],nearest_points[:,0],'o', markerfacecolor='None',markersize=15,markeredgewidth=1)
 
-            show()
+            output_the_plot.output('knn_per_point_%s_%s.png' % (Document_ID,p_idx))
 
         #All m points combinations from Pn
         m=7
@@ -98,12 +105,12 @@ if __name__=="__main__":
     # load the image file
     img = Image.open(file_name)
     print img
-    exit(0)
-    if showFigure:
+    if toPlot:
         figure(); 
         imshow(img)
-        show()
+        output_the_plot.output('original_%s.png' % Document_ID)
 
+    #exit(0)
     from testHashTable import TestTable
     hash_table = TestTable()
     image_register(img,Document_ID)

@@ -1,7 +1,10 @@
 from PIL import Image
+import matplotlib
+matplotlib.use('Agg')
 from pylab import imshow,show,subplot,array,figure,gray,uint8,hist,plot
 import numpy as np
 from pylab import jet,annotate
+import output_the_plot
 
 import itertools
 
@@ -11,15 +14,16 @@ from scipy import stats
 from knn_search import knn_search
 from feature_extract import sort_by_atan2
 from feature_extract import five_points_cross_ratio
-#showFigure=True
-showFigure=False
+
+toPlot=True
+#toPlot=False
+toDebug=False
 
 def find_nearest_points(p_2d_array,p_idx, N=8):
     p=p_2d_array[p_idx]
     # performing the search
     neighbours_idx = knn_search(p_idx,p_2d_array,N)
-    print 'afterknn:',neighbours_idx 
-    if showFigure:
+    if toPlot and toDebug:
         figure()
         imshow(img)
         # plotting the pointlist and the query point
@@ -27,8 +31,8 @@ def find_nearest_points(p_2d_array,p_idx, N=8):
 
         # highlighting the neighbours
         plot(p_2d_array[neighbours_idx,1],p_2d_array[neighbours_idx,0],'o', markerfacecolor='None',markersize=15,markeredgewidth=1)
-        show()
-    print "ok??" 
+        output_the_plot.output('xxx_%s.png' % Document_ID)
+
     nearest_n_points = p_2d_array[neighbours_idx]
     
     print 'center point:', p
@@ -38,7 +42,7 @@ def find_nearest_points(p_2d_array,p_idx, N=8):
     #print 'nearest_n_points sorted:', nearest_n_points
     return nearest_n_points  
 
-def get_word_centroid_points(img):
+def get_word_centroid_points(img,Document_ID):
     """
         find the connected component who's area satisfy some condition, which can be identified to be word regions.
         
@@ -51,30 +55,30 @@ def get_word_centroid_points(img):
     img_gray = array(img.convert('L'))   # not inplace operator
     img_gray = 255-img_gray
 
-    if showFigure:
+    if toPlot:
         figure(); gray(); # don't use colors 
         imshow(img_gray)
-        show()
+        output_the_plot.output('inversed_gray_%s.png' % Document_ID)
     # binary
     #img_bin = filter.threshold_adaptive(img_gray,17,method='mean')
     global_thresh = filter.threshold_otsu(img_gray)
     img_bin = img_gray > global_thresh 
 
-    if showFigure:
+    if toPlot:
         figure(); gray(); # don't use colors 
         imshow(img_bin)
-        show()
+        output_the_plot.output('binary_%s.png' % Document_ID)
 
     #== find connect components 
     s = array([[1,1,1],[1,1,1],[1,1,1]])
     # the mask image and num of objects
     labeled_array, num_features = measurements.label(img_bin, structure=s)
     print 'num of labels:', num_features 
-    if showFigure:
+    if toPlot:
         figure(); gray(); # don't use colors 
         imshow(labeled_array)
         jet()
-        show()
+        output_the_plot.output('labeled_array_%s.png' % Document_ID)
     
     #== filter the connected component by area
     word_area_list = []
@@ -93,11 +97,11 @@ def get_word_centroid_points(img):
     area_mode = stats.mode(word_area_list,axis=None)
     print area_mode
 
-    if showFigure:
+    if toPlot:
         figure(); gray(); # don't use colors 
         imshow(word_label_array)
         jet()
-        show()
+        output_the_plot.output('word_label_array_%s.png' % Document_ID)
     #print img_bin,stats.mode(img_bin,axis=None)
     #print img_bin,np.max(img_bin)
 
@@ -138,13 +142,13 @@ if __name__=="__main__":
     Document_ID = file_name
     # load the image file
     img = Image.open(file_name)
-    if showFigure:
+    if toPlot:
         figure(); 
         imshow(img)
-        show()
+        output_the_plot.output('original_%s.png' % Document_ID)
 
     #====== extract word regions and their centroids=====  
-    y_list, x_list = get_word_centroid_points(img)
+    y_list, x_list = get_word_centroid_points(img,Document_ID)
 
     figure(); 
     imshow(img)

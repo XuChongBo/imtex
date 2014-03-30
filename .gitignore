@@ -17,3 +17,5 @@ errors/
 *.table
 
 *.sqlite
+
+*.swp

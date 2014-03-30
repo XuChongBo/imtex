@@ -1,0 +1,16 @@
+{{extend 'layout.html'}}
+
+<h2>原图</h2>
+{{=IMG(_src=URL(r=request, c='default', f='get_my_file', args=['original_', doc_id]))}}
+
+<h2>处理过程</h2>
+<img src="{{=URL('get_my_file',args=['inversed_gray_', doc_id])}}" /> 
+<img src="{{=URL('get_my_file',args=['binary_', doc_id])}}" /> 
+<img src="{{=URL('get_my_file',args=['labeled_array_', doc_id])}}" /> 
+<img src="{{=URL('get_my_file',args=['word_label_array_', doc_id])}}" /> 
+<img src="{{=URL('get_my_file',args=['word_points_', doc_id])}}" /> 
+
+
+{{for img_filename in knn_per_point_image_list:}}
+    {{=IMG(_src=URL(r=request, c='default', f='get_my_file', args=[img_filename]))}}
+{{pass}} 

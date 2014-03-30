@@ -25,7 +25,7 @@ db.t_point_pattern.doc_id.requires = IS_IN_DB(db, db.t_doc_image.id, '%(title)s'
 db.t_point_pattern.doc_id.writable = db.t_point_pattern.doc_id.readable = False
 
 if __name__=="__main__":
-    db.t_doc_image.insert(title='title2',internal_filename='filenamex')
+    #db.t_doc_image.insert(title='title2',internal_filename='filenamex')
     #db.t_point_pattern.insert(hash_index=456,doc_id=2,point_id=0, pattern_id=0)
 
     db.commit()
@@ -33,4 +33,4 @@ if __name__=="__main__":
     #print db(db.t_point_pattern.hash_index==H_index).select()
 
     print db(db.t_doc_image).select()
-    print db(db.t_point_pattern).select()
+    #print db(db.t_point_pattern).select()
