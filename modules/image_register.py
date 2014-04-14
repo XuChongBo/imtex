@@ -49,7 +49,7 @@ def image_register(img,Document_ID):
 
     for p_idx in range(word_point_num):
         Point_ID = p_idx
-        print "to call find nearest points"
+        print "to find nearest points for word center point_id: %s" % Point_ID
         nearest_points = find_nearest_points(p_2d_array,p_idx, N=8)
         #print nearest_points
         if toPlot:
@@ -67,19 +67,19 @@ def image_register(img,Document_ID):
             # highlighting the neighbours
             plot(nearest_points[:,1],nearest_points[:,0],'o', markerfacecolor='None',markersize=15,markeredgewidth=1)
 
-            output_the_plot.output('knn_per_point_%s_%s.png' % (Document_ID,p_idx))
+            output_the_plot.output('knn_per_point_%s_%s.png' % (p_idx,Document_ID))
 
         #All m points combinations from Pn
         m=7
         nCm_list = itertools.combinations(nearest_points, m)
         nCm_Pattern_ID = 0
         for nCm in nCm_list:
-            print  nCm   
+            #print  nCm   
             #get All 5 points combinations from nCm
             mC5_pattern_list = itertools.combinations(nCm, 5)
             mC5_Pattern_ID = 0
             for mC5 in mC5_pattern_list:
-                print mC5 
+                #print mC5 
                 cross_ratio_list = five_points_cross_ratio(mC5)
                 Vmax = 10    #the maximum value of the possible discrete cross-ratios
                 pat = mC5_Pattern_ID 

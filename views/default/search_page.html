@@ -1,0 +1,40 @@
+{{extend 'layout.html'}}
+
+<h1>上传用于检索的图片</h1>
+{{=form}}
+{{=BEAUTIFY(form.errors)}}
+
+<h2>待检索图片:</h2>
+{{if img_to_search:}}
+{{=IMG(_src=URL(r=request, c='default', f='download', args=[img_to_search.internal_filename]))}}
+{{pass}}
+
+{{if time_cost:}}
+    <h2>检索耗时:{{=time_cost}}秒</h2>
+{{pass}}
+
+<h2>检索结果:</h2>
+<table border="3"> 
+    <tr> <th>ID</th> <th>name</th> <th>image</th> <th>match score</th></tr> 
+    {{for item in result_list:}} 
+        {{if item[1]==0: continue}}
+        {{record = db.t_doc_image(id=item[0])}}
+        {{filename, file = db.t_doc_image.internal_filename.retrieve(record.internal_filename)}} 
+        <tr> 
+            <td> 
+                {{=record.id}} 
+            </td> 
+            <td> 
+                {{=filename}} 
+            </td> 
+            <td> 
+            {{=IMG(_src=URL(r=request, c='default', f='download', args=[record.internal_filename]))}}
+            </td> 
+            <td>
+            {{=item[1]}}
+            </td>
+            </tr>
+           
+    {{pass}} 
+</table>
+

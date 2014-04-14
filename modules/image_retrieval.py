@@ -1,8 +1,11 @@
 from PIL import Image
-from pylab import imshow,show,subplot,array,figure,gray,uint8,hist,plot
+import matplotlib
+matplotlib.use('Agg')
+from pylab import imshow,subplot,array,figure,gray,uint8,hist,plot
 import numpy as np
 from pylab import jet,annotate
 import time
+import output_the_plot
 
 import itertools
 
@@ -14,8 +17,8 @@ from feature_extract import sort_by_atan2
 from feature_extract import five_points_cross_ratio
 from word_region_identify import get_word_centroid_points,find_nearest_points
 
-#showFigure=True
-showFigure=False
+toPlot=True
+#toPlot=False
 
 hash_table = None
 
@@ -28,14 +31,16 @@ def image_retrieval(img):
         input: PIL img
         output: image_id_list
     """
-
+    Document_ID = 'ToSearch'
     #====== extract word regions and their centroids=====  
-    y_list, x_list = get_word_centroid_points(img)
+    y_list, x_list = get_word_centroid_points(img,Document_ID)
 
-    figure(); 
-    imshow(img)
-    plot(x_list,y_list,'r*')
-    show()
+    if toPlot:
+        figure(); 
+        imshow(img)
+        plot(x_list,y_list,'r*')
+        output_the_plot.output('word_points_%s.png' % Document_ID)
+
     start_time = time.time()
     p_2d_array=np.array(zip(y_list,x_list))
     word_point_num = len(p_2d_array)
@@ -45,7 +50,7 @@ def image_retrieval(img):
         Point_ID = p_idx
         nearest_points = find_nearest_points(p_2d_array,p_idx, N=8)
         #print nearest_points
-        if showFigure:
+        if toPlot:
             figure()
             imshow(img)
             center_point = p_2d_array[p_idx]
@@ -60,7 +65,7 @@ def image_retrieval(img):
             # highlighting the neighbours
             plot(nearest_points[:,1],nearest_points[:,0],'o', markerfacecolor='None',markersize=15,markeredgewidth=1)
 
-            show()
+            output_the_plot.output('knn_per_point_%s_%s.png' % (p_idx,Document_ID))
 
         #All m points combinations from Pn
         m=7
@@ -100,24 +105,26 @@ def image_retrieval(img):
             nCm_Pattern_ID += 1
         #break #all point
     #Return document id which has the largest votes in the second voting table
-    print 'the result doc_id:', hash_table.get_topk_in_second_vote_table()
+    match_doc_list = hash_table.get_topk_in_second_vote_table()
+    print 'the result (doc_id,match_value) list:', match_doc_list
 
     end_time = time.time()
-    print " cost:%s s" % int(end_time-start_time)
+    time_cost = int(end_time-start_time)
+    print " cost:%s s" % time_cost
+    return (match_doc_list, time_cost)
 
 if __name__=="__main__":
     #file_name='./data/das-0.jpg'
     #file_name='./data/EngBill21.jpg'
     #file_name='./data/sample1.jpg'
     file_name='/Users/xcbfreedom/projects/data/formula_images/user_images/531283fa24f0b8afb.png'
-    Document_ID = file_name
     # load the image file
     img = Image.open(file_name)
 
-    if showFigure:
+    if toPlot:
         figure(); 
         imshow(img)
-        show()
+        output_the_plot.output('test.png')
 
     from testHashTable import TestTable
     hash_table = TestTable()

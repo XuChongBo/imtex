@@ -99,3 +99,8 @@ db.define_table('t_point_pattern',
 
 db.t_point_pattern.doc_id.requires = IS_IN_DB(db, db.t_doc_image.id, '%(title)s')
 db.t_point_pattern.doc_id.writable = db.t_point_pattern.doc_id.readable = False
+
+
+db.define_table('t_image_to_search',
+        Field('internal_filename', 'upload',notnull=True))
+

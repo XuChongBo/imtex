@@ -24,7 +24,11 @@ def five_points_cross_ratio(point_list):
             angle = math.atan2(p[0]-center_point[0], p[1]-center_point[1])
             angle_list.append(angle)
         assert(len(angle_list)==4)
-        cross_ratio = math.sin(angle_list[2]-angle_list[0])/math.sin(angle_list[2]-angle_list[1])/(math.sin(angle_list[3]-angle_list[0])/math.sin(angle_list[3]-angle_list[1]))
+        #cross_ratio = math.sin(angle_list[2]-angle_list[0])/math.sin(angle_list[2]-angle_list[1])/(math.sin(angle_list[3]-angle_list[0])/math.sin(angle_list[3]-angle_list[1]))
+        b = (math.sin(angle_list[2]-angle_list[1])*math.sin(angle_list[3]-angle_list[0]))
+        if b==0:
+            b=10**(-100)
+        cross_ratio = math.sin(angle_list[2]-angle_list[0])*math.sin(angle_list[3]-angle_list[1])/b
         cross_ratio_list.append(cross_ratio)
     return  cross_ratio_list
 

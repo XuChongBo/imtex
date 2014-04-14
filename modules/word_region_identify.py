@@ -35,7 +35,7 @@ def find_nearest_points(p_2d_array,p_idx, N=8):
 
     nearest_n_points = p_2d_array[neighbours_idx]
     
-    print 'center point:', p
+    #print 'center point:', p
     #print 'nearest_n_points:', nearest_n_points
     # sort by atan2.  center on p. 
     nearest_n_points = sort_by_atan2(nearest_n_points,p)
